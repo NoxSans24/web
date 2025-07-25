@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<button id="themeToggle" class="theme-toggle">🌙</button>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="flash-message">
+      {% for message in messages %}
+        <p>{{ message }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<div class="box">
+  <div class="login active">
+    <div class="loginBx">
+      <div class="login-title">
+        <i class="fas fa-user-circle"></i>
+        <span>Profil</span>
+        <i class="fas fa-heart"></i>
+      </div>
+
+      <img src="{{ url_for('static', filename='uploads/' + (user['foto'] if user['foto'] else 'default.png')) }}"
+           alt="Foto Profil"
+           style="width:100px; height:100px; border-radius:50%; border:2px solid #fff; object-fit:cover; box-shadow: 0 0 10px #00bfff;">
+
+      <div class="login-form">
+        <input type="text" value="Nama: {{ user['name'] }}" disabled>
+        <input type="text" value="NPM: {{ user['npm'] }}" disabled>
+        <input type="text" value="Jurusan: {{ user['jurusan'] }}" disabled>
+        <input type="text" value="Fakultas: {{ user['fakultas'] }}" disabled>
+      </div>
+
+      <div class="group" style="margin-top:10px;">
+        <a href="/edit_profile">✏️ Edit Profil</a>
+        &nbsp;|&nbsp;
+        <a href="/logout">🚪 Logout</a>
+      </div>
+
+      <hr style="width:80%; margin:20px 0; border:1px solid #444;">
+
+      <h4 style="text-align:center; margin-bottom:10px;">Log Aktivitas</h4>
+      <ul style="width:100%; max-height:100px; overflow-y:auto; font-size:0.9em;">
+        {% for log in logs %}
+          <li>{{ log[2] }} — {{ log[3] }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Font Awesome (ikon) -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<script>
+  const toggleBtn = document.getElementById("themeToggle");
+  const currentTheme = localStorage.getItem("theme");
+
+  if (currentTheme === "light") {
+    document.body.classList.add("light");
+    toggleBtn.textContent = "☀️";
+  }
+
+  toggleBtn.addEventListener("click", () => {
+    document.body.classList.toggle("light");
+    const isLight = document.body.classList.contains("light");
+    localStorage.setItem("theme", isLight ? "light" : "dark");
+    toggleBtn.textContent = isLight ? "☀️" : "🌙";
+  });
+</script>
+
+</body>
+</html>

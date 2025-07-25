@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Profil</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<button id="themeToggle" class="theme-toggle">🌙</button>
+<!-- Flash Message -->
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="flash-message">
+      {% for message in messages %}
+        <p>{{ message }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<!-- Glowing Box -->
+<div class="box">
+  <div class="login active">
+    <div class="loginBx">
+
+      <!-- Judul -->
+      <div class="login-title">
+        <i class="fas fa-user-edit"></i>
+        <span>Edit Profil</span>
+        <i class="fas fa-heart"></i>
+      </div>
+
+      <!-- Preview Foto -->
+      <img id="previewFoto"
+           src="{{ url_for('static', filename='uploads/' + (user['foto'] if user['foto'] else 'default.png')) }}"
+           alt="Foto Profil"
+           style="width:100px; height:100px; border-radius:50%; border:2px solid #fff; object-fit:cover; box-shadow: 0 0 10px #00bfff; margin-bottom:10px;">
+
+      <!-- Form Edit Profil -->
+      <form method="POST" action="/edit_profile" enctype="multipart/form-data" class="login-form">
+        <input type="text" name="name" value="{{ user['name'] }}" placeholder="Nama" required>
+        <input type="text" name="jurusan" value="{{ user['jurusan'] }}" placeholder="Jurusan" required>
+        <input type="text" name="fakultas" value="{{ user['fakultas'] }}" placeholder="Fakultas" required>
+
+        <input type="file" name="foto" accept=".jpg,.jpeg,.png" onchange="previewGambar(this)">
+        <small id="fileWarning" style="color: #ffcc00; display: none;"></small>
+
+        <input type="submit" value="Simpan Perubahan">
+      </form>
+
+      <hr style="width: 100%; border: 1px solid #444; margin: 20px 0;">
+
+      <!-- Form Ganti Password -->
+      <h4 style="margin-bottom: 10px;">Ganti Password</h4>
+      <form method="POST" action="/change_password" class="login-form">
+        <div class="password-field">
+          <input type="password" name="old_pw" placeholder="Password Lama" required>
+        </div>
+        <div class="password-field">
+          <input type="password" name="new_pw" placeholder="Password Baru" required>
+        </div>
+        <input type="submit" value="Ganti Password">
+      </form>
+
+      <div class="group" style="margin-top: 15px;">
+        <a href="/dashboard">← Kembali ke Dashboard</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Font Awesome -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+<!-- Script Preview Gambar + Validasi Ukuran -->
+<script>
+function previewGambar(input) {
+  const preview = document.getElementById('previewFoto');
+  const warning = document.getElementById('fileWarning');
+  const file = input.files[0];
+
+  if (file) {
+    if (file.size > 2 * 1024 * 1024) { // > 2MB
+      warning.innerText = "Ukuran file terlalu besar (maksimal 2 MB)";
+      warning.style.display = "block";
+      input.value = "";
+      preview.src = "{{ url_for('static', filename='uploads/' + (user['foto'] if user['foto'] else 'default.png')) }}";
+      return;
+    }
+
+    warning.style.display = "none";
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      preview.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+}
+</script>
+<script>
+  const toggleBtn = document.getElementById("themeToggle");
+  const currentTheme = localStorage.getItem("theme");
+
+  if (currentTheme === "light") {
+    document.body.classList.add("light");
+    toggleBtn.textContent = "☀️";
+  }
+
+  toggleBtn.addEventListener("click", () => {
+    document.body.classList.toggle("light");
+    const isLight = document.body.classList.contains("light");
+    localStorage.setItem("theme", isLight ? "light" : "dark");
+    toggleBtn.textContent = isLight ? "☀️" : "🌙";
+  });
+</script>
+
+</body>
+</html>

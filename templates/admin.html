@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h2>👑 Admin Panel</h2>
+  <p><a href="/logout">Logout</a></p>
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="flash-message">
+        {% for message in messages %}
+          <p>{{ message }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <table border="1" cellpadding="10" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Nama</th>
+        <th>NPM</th>
+        <th>Jurusan</th>
+        <th>Fakultas</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+      <tr>
+        <td>{{ user[1] }}</td>
+        <td>{{ user[2] }}</td>
+        <td>{{ user[3] }}</td>
+        <td>{{ user[4] }}</td>
+        <td>
+          <a href="{{ url_for('delete_user', user_id=user[0]) }}">Hapus</a> |
+          <a href="{{ url_for('reset_password', user_id=user[0]) }}">Reset PW</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>

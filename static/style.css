@@ -1,0 +1,343 @@
+/* Import font dan ikon */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
+@import url("https://use.fontawesome.com/releases/v6.5.1/css/all.css");
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: #25252b;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* Flash message */
+.flash-message {
+  background: #333;
+  color: #ffcc00;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  border-left: 5px solid #ffcc00;
+  border-radius: 6px;
+  font-size: 0.95em;
+  text-align: center;
+}
+
+/* Glowing border animasi */
+@property --a {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.box {
+  position: relative;
+  width: 400px;
+  border-radius: 20px;
+  background: repeating-conic-gradient(
+    from var(--a),
+    #ff0059 0%,
+    #ff0059 5%,
+    transparent 5%,
+    transparent 40%,
+    #ff0059 50%
+  );
+  animation: rotating 4s linear infinite;
+  padding: 6px;
+  filter: drop-shadow(0 15px 50px #000);
+  z-index: 1;
+}
+
+@keyframes rotating {
+  0% { --a: 0deg; }
+  100% { --a: 360deg; }
+}
+
+.box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: repeating-conic-gradient(
+    from var(--a),
+    #00bfff 0%,
+    #00bfff 5%,
+    transparent 5%,
+    transparent 40%,
+    #00bfff 50%
+  );
+  animation: rotating 4s linear infinite;
+  animation-delay: -2s;
+  filter: drop-shadow(0 15px 50px #000);
+  z-index: -1;
+}
+
+/* Kontainer isi */
+.login {
+  background: #2d2d39;
+  border-radius: 16px;
+  padding: 40px 30px;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  animation: fade-in 0.3s ease-in-out;
+}
+
+.login.active {
+  display: flex;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Judul Form */
+.login-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 1.5em;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 0 10px #ff0059;
+  margin-bottom: 20px;
+}
+
+.login-title i {
+  color: #ff0059;
+  text-shadow: 0 0 6px #ff0059, 0 0 15px #ff0059;
+}
+
+/* Isi Form */
+.loginBx {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.login-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+input, select {
+  padding: 10px 20px;
+  border-radius: 30px;
+  border: 2px solid #fff;
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  font-size: 1em;
+  outline: none;
+  transition: 0.3s;
+  width: 100%;
+}
+
+input::placeholder {
+  color: #ccc;
+}
+
+input[type="submit"] {
+  background: #00bfff;
+  color: #111;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  box-shadow: 0 0 10px #00bfff, 0 0 40px #00bfff;
+}
+
+input[type="submit"]:disabled {
+  background: #999;
+  color: #444;
+  cursor: wait;
+}
+
+/* Upload file */
+input[type="file"] {
+  border: 1px dashed #888;
+  background: #1c1c25;
+  color: #aaa;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* Link Group */
+.group {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: 0.95em;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.group a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.group a:hover {
+  text-decoration: underline;
+}
+
+/* Password toggle */
+.password-field {
+  position: relative;
+  width: 100%;
+}
+
+.password-field input {
+  width: 100%;
+  padding-right: 45px;
+}
+
+.password-field i {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  color: #ccc;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.password-field i:hover {
+  color: #00bfff;
+}
+
+/* Daftar aktivitas */
+.loginBx ul {
+  list-style: none;
+  padding-left: 0;
+  width: 100%;
+  max-height: 120px;
+  overflow-y: auto;
+  font-size: 0.9em;
+  color: #ccc;
+}
+
+.loginBx ul li {
+  border-bottom: 1px solid #444;
+  padding: 5px 0;
+}
+
+/* Judul kecil */
+h4 {
+  text-align: center;
+  color: #ff0059;
+  margin-bottom: 10px;
+}
+
+/* Responsif */
+@media (max-width: 500px) {
+  .box {
+    width: 95vw;
+  }
+
+  .login {
+    padding: 30px 20px;
+  }
+
+  .login-title {
+    font-size: 1.2em;
+  }
+
+  input {
+    font-size: 0.9em;
+    padding: 8px 14px;
+  }
+
+  .group {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+}
+/* Tombol toggle tema */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  font-size: 1.2em;
+  padding: 8px 12px;
+  cursor: pointer;
+  color: #fff;
+  z-index: 999;
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Tema terang (mode light) */
+body.light {
+  background: #f2f2f2;
+  color: #222;
+}
+
+body.light .box {
+  background: #e0e0e0;
+  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.2));
+}
+
+body.light .login {
+  background: #ffffffdd;
+  color: #111;
+  border-bottom: 2px solid #ccc;
+  box-shadow: inset 0 10px 20px #00000010;
+}
+
+body.light input {
+  background: #f5f5f5;
+  color: #111;
+  border: 2px solid #222;
+}
+
+body.light input::placeholder {
+  color: #666;
+}
+
+body.light .group a {
+  color: #333;
+}
+
+body.light .login-title,
+body.light .login-title i {
+  color: #0066ff;
+  text-shadow: none;
+}
+
+body.light .theme-toggle {
+  border-color: #111;
+  color: #111;
+}

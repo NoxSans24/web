@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login & Sign Up</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Font Awesome for eye icon -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<button id="themeToggle" class="theme-toggle">🌙</button>
+<!-- Flash Message -->
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="flash-message">
+      {% for message in messages %}
+        <p>{{ message }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<!-- Main Container -->
+<div class="box">
+
+  <!-- Login Form -->
+  <div class="login active" id="formLogin">
+    <div class="loginBx">
+      <div class="login-title">
+        <i class="fas fa-right-to-bracket"></i>
+        <span>Login</span>
+        <i class="fas fa-heart"></i>
+      </div>
+      <form method="POST" action="/login" class="login-form" onsubmit="return showLoading(this)">
+        <input type="text" name="npm" placeholder="NPM" required>
+        <div class="password-field">
+          <input type="password" name="password" placeholder="Password" id="loginPassword" required>
+          <i class="fas fa-eye" onclick="togglePassword('loginPassword', this)"></i>
+        </div>
+        <input type="submit" value="Login">
+      </form>
+      <div class="group">
+        <a href="#" onclick="toggleForm('signup')">Belum punya akun? Daftar</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sign Up Form -->
+  <div class="login" id="formSignup">
+    <div class="loginBx">
+      <div class="login-title">
+        <i class="fas fa-user-plus"></i>
+        <span>Sign Up</span>
+        <i class="fas fa-heart"></i>
+      </div>
+      <form method="POST" action="/signup" class="login-form" onsubmit="return showLoading(this)">
+        <input type="text" name="name" placeholder="Nama Lengkap" required>
+        <input type="text" name="npm" placeholder="NPM" required>
+        <input type="text" name="jurusan" placeholder="Jurusan" required>
+        <input type="text" name="fakultas" placeholder="Fakultas" required>
+        <div class="password-field">
+          <input type="password" name="password" placeholder="Password" id="signupPassword" required>
+          <i class="fas fa-eye" onclick="togglePassword('signupPassword', this)"></i>
+        </div>
+        <input type="submit" value="Register">
+      </form>
+      <div class="group">
+        <a href="#" onclick="toggleForm('login')">Sudah punya akun? Login</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Script -->
+<script>
+  function toggleForm(form) {
+    document.getElementById('formLogin').classList.remove('active');
+    document.getElementById('formSignup').classList.remove('active');
+    document.getElementById('form' + form.charAt(0).toUpperCase() + form.slice(1)).classList.add('active');
+  }
+
+  function showLoading(form) {
+    const btn = form.querySelector('input[type="submit"]');
+    btn.value = "Loading...";
+    btn.disabled = true;
+    return true;
+  }
+
+  function togglePassword(id, icon) {
+    const input = document.getElementById(id);
+    if (input.type === "password") {
+      input.type = "text";
+      icon.classList.remove("fa-eye");
+      icon.classList.add("fa-eye-slash");
+    } else {
+      input.type = "password";
+      icon.classList.remove("fa-eye-slash");
+      icon.classList.add("fa-eye");
+    }
+  }
+</script>
+<script>
+  const toggleBtn = document.getElementById("themeToggle");
+  const currentTheme = localStorage.getItem("theme");
+
+  if (currentTheme === "light") {
+    document.body.classList.add("light");
+    toggleBtn.textContent = "☀️";
+  }
+
+  toggleBtn.addEventListener("click", () => {
+    document.body.classList.toggle("light");
+    const isLight = document.body.classList.contains("light");
+    localStorage.setItem("theme", isLight ? "light" : "dark");
+    toggleBtn.textContent = isLight ? "☀️" : "🌙";
+  });
+</script>
+
+</body>
+</html>
